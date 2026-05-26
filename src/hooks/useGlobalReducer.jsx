@@ -30,19 +30,53 @@ export function StoreProvider({ children }) {
             console.log(error)
         }
     }
+
+    const createContact = async (newContact) => {
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newContact)
+            })
+            console.log(response)
+
+            const data = await response.json()
+            
+            console.log(data)
+            getContacts()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         getContacts()
     }, [])
 
     // Provi       omponents.
     return (
-        <StoreContext.Provider value={{ store, dispatch, getContacts}}>
+        <StoreContext.Provider value={{ store, dispatch, getContacts, createContact }}>
             {children}
         </StoreContext.Provider>
     )}
 
 // Custom hook to access the global state and dispatch function.
 export default function useGlobalReducer() {
-    const { dispatch, store } = useContext(StoreContext)
-    return { dispatch, store };
+
+    const {
+        dispatch,
+        store,
+        getContacts,
+        createContact
+    } = useContext(StoreContext)
+
+    return {
+        dispatch,
+        store,
+        getContacts,
+        createContact
+    };
 }
