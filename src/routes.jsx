@@ -12,6 +12,7 @@ import { Demo } from "./pages/Demo";
 import { Contact } from "./pages/Contact";
 import { AddContact } from "./pages/AddContact";
 
+
 export const router = createBrowserRouter(
     createRoutesFromElements(
     // CreateRoutesFromElements function allows you to build route elements declaratively.

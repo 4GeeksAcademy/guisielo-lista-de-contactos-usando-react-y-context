@@ -1,20 +1,17 @@
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import { ContactCard } from "../components/ContactCard";
 
 export const Contact = () => {
-    const { store } = useGlobalReducer()
-    return (
-        <div className="container mt-5">
-            <h1>Lista de Contactos</h1>
-            {
-                store.contacts?.map((contact) => (
-                    <div key={contact.id} className="card p-3 mb-3">
-                        <h3>{contact.name}</h3>
-                        <p>{contact.phone}</p>
-                        <p>{contact.email}</p>
-                        <p>{contact.address}</p>
-                    </div>
-                ))
-            }
-        </div>
-    )
-}
+  const { store } = useGlobalReducer();
+  console.log("STORE CONTACTS:", store.contacts); 
+
+  return (
+    <div>
+      <h1>Contacts</h1>
+
+      {store.contacts.map(contact => (
+        <ContactCard key={contact.id} contact={contact} />
+      ))}
+    </div>
+  );
+};

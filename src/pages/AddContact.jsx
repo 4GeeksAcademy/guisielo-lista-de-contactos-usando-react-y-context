@@ -3,45 +3,27 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const AddContact = () => {
 
-    const { createContact } = useGlobalReducer()
+    const { store, dispatch } = useGlobalReducer()
 
     const [contact, setContact] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
-    agenda_slug: "guisielo"
+        name: "",
+        phone: "",
+        email: "",
+        address: "",
+        agenda_slug: "guisielo"
     })
 
     const handleChange = (event) => {
-
         setContact({
             ...contact,
             [event.target.name]: event.target.value
         })
     }
 
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-
-        await createContact(contact)
-
-        setContact({
-        name: "",
-        phone: "",
-        email: "",
-        address: "",
-        agenda_slug: "guisielo"
-        })
-    }
-
     return (
         <div className="container mt-5">
-
             <h1>Add Contact</h1>
-
-            <form onSubmit={handleSubmit}>
-
+            <form>
                 <input
                     type="text"
                     name="name"
@@ -78,11 +60,23 @@ export const AddContact = () => {
                     onChange={handleChange}
                 />
 
-                <button className="btn btn-primary">
-                    Save Contact
+                <button
+                    className="btn btn-primary"
+                    onClick={() =>{
+                        console.log("CONTACTO ENVIADO:", contact);
+                        dispatch({
+                        type: "ADD_CONTACT",
+                        payload: {
+                            ...contact,
+                            id: Date.now()
+                        }
+                        })
+                    }}
+                >
+                        Save Contact
                 </button>
 
             </form>
         </div>
     )
-}
+};
