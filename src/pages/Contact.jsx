@@ -7,14 +7,19 @@ export const Contact = () => {
   const { store, dispatch } = useGlobalReducer();
 
   const createAgenda = async () => {
-    await fetch(
-      "https://playground.4geeks.com/contact/agendas/guisielo",
-      {
-        method: "POST"
-      }
+    const resp = await fetch(
+      "https://playground.4geeks.com/contact/agendas/guisielo"
     );
-  };
 
+    if (resp.status === 404) {
+      await fetch(
+        "https://playground.4geeks.com/contact/agendas/guisielo",
+        {
+          method: "POST"
+        }
+      );
+    }
+  };
   const getContacts = async () => {
     try {
       const resp = await fetch(
