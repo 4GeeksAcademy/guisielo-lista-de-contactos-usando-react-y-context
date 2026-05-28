@@ -1,11 +1,21 @@
 import { useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { ContactCard } from "../components/ContactCard";
+import { Link } from "react-router-dom";
 
 export const Contact = () => {
   const { store, dispatch } = useGlobalReducer();
 
-    const getContacts = async () => {
+  const createAgenda = async () => {
+    await fetch(
+      "https://playground.4geeks.com/contact/agendas/guisielo",
+      {
+        method: "POST"
+      }
+    );
+  };
+
+  const getContacts = async () => {
     try {
       const resp = await fetch(
         "https://playground.4geeks.com/contact/agendas/guisielo/contacts"
@@ -24,16 +34,29 @@ export const Contact = () => {
   };
 
   useEffect(() => {
-    getContacts();
+    const loadData = async () => {
+      await createAgenda();
+      await getContacts();
+    };
+
+    loadData();
+
   }, []);
 
   return (
-    <div>
-      <h1>Contacts</h1>
-      {(store.contacts || []).map(contact => (
-        <ContactCard key={contact.id} contact={contact} />
-      ))}
-      
+    <div className="d-flex flex-column align-items-center">
+      <div style={{ width: "60%" }}>
+        <div className="d-flex justify-content-end mb-3">
+          <Link to="/add-contact">
+            <button className="btn btn-success">
+              Add new contact
+            </button>
+          </Link>
+        </div>
+        {(store.contacts || []).map(contact => (
+          <ContactCard key={contact.id} contact={contact} />
+        ))}
+      </div>
     </div>
   );
 };

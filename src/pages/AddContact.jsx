@@ -1,6 +1,13 @@
 import { useState } from "react";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const AddContact = () => {
+
+  const { dispatch } = useGlobalReducer();
+  const { id } = useParams();
 
   const [contact, setContact] = useState({
     name: "",
@@ -20,7 +27,7 @@ export const AddContact = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await fetch(
+    const resp = await fetch(
       "https://playground.4geeks.com/contact/agendas/guisielo/contacts",
       {
         method: "POST",
@@ -31,61 +38,66 @@ export const AddContact = () => {
       }
     );
 
-    // opcional: limpiar formulario
-    setContact({
-      name: "",
-      phone: "",
-      email: "",
-      address: "",
-      agenda_slug: "guisielo"
+    const data = await resp.json();
+
+     dispatch({
+      type: "ADD_CONTACT",
+      payload: data
     });
   };
 
   return (
-    <div className="container mt-5">
-      <h1>Add Contact</h1>
+    <div className="container d-flex flex-column align-items-center mt-5">
+      <h1>Add a new contact</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          className="form-control mb-3"
-          value={contact.name}
-          onChange={handleChange}
-        />
+      <div style={{ width: "60%" }}>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            className="form-control mb-3"
+            value={contact.name}
+            onChange={handleChange}
+          />
 
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          className="form-control mb-3"
-          value={contact.phone}
-          onChange={handleChange}
-        />
+          <input
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            className="form-control mb-3"
+            value={contact.phone}
+            onChange={handleChange}
+          />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="form-control mb-3"
-          value={contact.email}
-          onChange={handleChange}
-        />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="form-control mb-3"
+            value={contact.email}
+            onChange={handleChange}
+          />
 
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          className="form-control mb-3"
-          value={contact.address}
-          onChange={handleChange}
-        />
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            className="form-control mb-3"
+            value={contact.address}
+            onChange={handleChange}
+          />
 
-        <button className="btn btn-primary" type="submit">
-          Save Contact
-        </button>
-      </form>
+          <button className="btn btn-primary w-100" type="submit">
+            Save Contact
+          </button>
+
+          <Link to="/contacts" className="btn btn-link">
+          or get back to contacts
+          </Link>
+
+        </form>
+      </div>
     </div>
   );
 };
