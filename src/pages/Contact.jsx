@@ -7,19 +7,28 @@ export const Contact = () => {
   const { store, dispatch } = useGlobalReducer();
 
   const createAgenda = async () => {
-    const resp = await fetch(
-      "https://playground.4geeks.com/contact/agendas/guisielo"
-    );
-
-    if (resp.status === 404) {
-      await fetch(
+    try {
+      const resp = await fetch(
         "https://playground.4geeks.com/contact/agendas/guisielo",
         {
-          method: "POST"
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
       );
+
+      if (resp.ok) {
+        console.log("Agenda creada correctamente");
+      } else {
+        console.log("La agenda ya existe");
+      }
+
+    } catch (error) {
+      console.error("Error al conectar con la API:", error);
     }
   };
+
   const getContacts = async () => {
     try {
       const resp = await fetch(

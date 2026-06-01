@@ -40,55 +40,56 @@ export const AddContact = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (
-      !contact.name ||
-      !contact.phone ||
-      !contact.email ||
-      !contact.address
-    ) {
-      alert("Por favor completa todos los campos");
-      return;
-    }
-
-    const url = id
-      ? `https://playground.4geeks.com/contact/agendas/guisielo/contacts/${id}`
-      : "https://playground.4geeks.com/contact/agendas/guisielo/contacts";
-
-    const method = id ? "PUT" : "POST";
-
-    const resp = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(contact)
+    try {
+      if (
+        !contact.name ||
+        !contact.phone ||
+        !contact.email ||
+        !contact.address
+      ) {
+        alert("Por favor completa todos los campos");
+        return;
       }
-    );
-    
-    const data = await resp.json();
 
-    alert(id ? "Contacto actualizado correctamente" : "Contacto creado correctamente");
+      const url = id
+        ? `https://playground.4geeks.com/contact/agendas/guisielo/contacts/${id}`
+        : "https://playground.4geeks.com/contact/agendas/guisielo/contacts";
 
-    dispatch({
-      type: id ? "UPDATE_CONTACT" : "ADD_CONTACT",
-      payload: data
-    });
+      const method = id ? "PUT" : "POST";
 
-    setContact({
-        name: "",
-        phone: "",
-        email: "",
-        address: "",
-        agenda_slug: "guisielo"
-    });
+      const resp = await fetch(url, {
+          method,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(contact)
+      });
       
-    navigate("/contacts");
+      if (!resp.ok) {
+      throw new Error(`Error HTTP: ${resp.status}`);
+      }
+      
+      const data = await resp.json();
 
+      dispatch({
+        type: id ? "UPDATE_CONTACT" : "ADD_CONTACT",
+        payload: data
+      });
+
+      alert(id ? "Contacto actualizado correctamente" : "Contacto creado correctamente");
+
+      navigate("/contacts");
+    } catch (error) {
+        console.error(error);
+        alert("Ocurrió un error al guardar el contacto");
+      }
   };
 
   return (
     <div className="container d-flex flex-column align-items-center mt-5">
-      <h1>Add a new contact</h1>
+      <h1>
+        {id ? "Edit contact" : "Add a new contact"}
+      </h1>
 
       <div style={{ width: "60%" }}>
         <h6>Full Name</h6>
