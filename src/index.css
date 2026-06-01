@@ -13,3 +13,22 @@
     justify-content: flex-end;
     margin-bottom: 1rem;
 }
+
+.add-contact-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.add-contact-form-container {
+    width: 60%;
+}
+
+.add-contact-form-container input {
+    margin-bottom: 1rem;
+}
+
+.add-contact-form-container button {
+    width: 100%;
+}

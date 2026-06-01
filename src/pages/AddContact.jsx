@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import { useNavigate } from "react-router-dom";
-
 
 export const AddContact = () => {
 
@@ -86,19 +84,19 @@ export const AddContact = () => {
   };
 
   return (
-    <div className="container d-flex flex-column align-items-center mt-5">
+    <div className="add-contact-page">
       <h1>
         {id ? "Edit contact" : "Add a new contact"}
       </h1>
 
-      <div style={{ width: "60%" }}>
-        <h6>Full Name</h6>
+      <div className="add-contact-form-container">
         <form onSubmit={handleSubmit}>
+          <h6>Full Name</h6>
           <input
             type="text"
             name="name"
             placeholder="Enter Full Name"
-            className="form-control mb-3"
+            className="form-control"
             value={contact.name}
             onChange={handleChange}
           />
@@ -107,7 +105,7 @@ export const AddContact = () => {
             type="email"
             name="email"
             placeholder="Enter Email"
-            className="form-control mb-3"
+            className="form-control"
             value={contact.email}
             onChange={handleChange}
           />
@@ -116,7 +114,7 @@ export const AddContact = () => {
             type="text"
             name="phone"
             placeholder="Enter Phone"
-            className="form-control mb-3"
+            className="form-control"
             value={contact.phone}
             onChange={handleChange}
           />
@@ -125,12 +123,12 @@ export const AddContact = () => {
             type="text"
             name="address"
             placeholder="Enter Address"
-            className="form-control mb-3"
+            className="form-control"
             value={contact.address}
             onChange={handleChange}
           />
 
-          <button className="btn btn-primary w-100" type="submit">
+          <button className="btn btn-primary" type="submit">
             Save Contact
           </button>
 
