@@ -49,9 +49,9 @@ export const Contact = () => {
   }, []);
 
   return (
-    <div className="d-flex flex-column align-items-center">
-      <div style={{ width: "60%" }}>
-        <div className="d-flex justify-content-end mb-3">
+    <div className="contacts-page">
+      <div className="contacts-container">
+        <div className="contacts-header">
           <Link to="/add-contact">
             <button className="btn btn-success">
               Add new contact

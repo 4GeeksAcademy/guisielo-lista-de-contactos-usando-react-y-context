@@ -1,0 +1,15 @@
+.contacts-page {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.contacts-container {
+    width: 60%;
+}
+
+.contacts-header {
+    display:flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
