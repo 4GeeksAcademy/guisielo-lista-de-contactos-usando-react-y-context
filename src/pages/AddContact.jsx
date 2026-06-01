@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useNavigate } from "react-router-dom";
 
+
 export const AddContact = () => {
 
-  const { dispatch } = useGlobalReducer();
+  const { store, dispatch } = useGlobalReducer();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -16,6 +17,18 @@ export const AddContact = () => {
     address: "",
     agenda_slug: "guisielo"
   });
+
+  useEffect(() => {
+    if (id) {
+      const contactToEdit = store.contacts.find(
+        contact => contact.id === parseInt(id)
+      );
+
+      if (contactToEdit) {
+        setContact(contactToEdit);
+      }
+    }
+  }, [id, store.contacts]);
 
   const handleChange = (event) => {
     setContact({
@@ -37,10 +50,14 @@ export const AddContact = () => {
       return;
     }
 
-    const resp = await fetch(
-      "https://playground.4geeks.com/contact/agendas/guisielo/contacts",
-      {
-        method: "POST",
+    const url = id
+      ? `https://playground.4geeks.com/contact/agendas/guisielo/contacts/${id}`
+      : "https://playground.4geeks.com/contact/agendas/guisielo/contacts";
+
+    const method = id ? "PUT" : "POST";
+
+    const resp = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json"
         },
@@ -50,22 +67,22 @@ export const AddContact = () => {
     
     const data = await resp.json();
 
-    alert("Contacto creado correctamente");
+    alert(id ? "Contacto actualizado correctamente" : "Contacto creado correctamente");
 
-     dispatch({
-      type: "ADD_CONTACT",
+    dispatch({
+      type: id ? "UPDATE_CONTACT" : "ADD_CONTACT",
       payload: data
     });
 
-      setContact({
+    setContact({
         name: "",
         phone: "",
         email: "",
         address: "",
         agenda_slug: "guisielo"
-      });
+    });
       
-      navigate("/contacts");
+    navigate("/contacts");
 
   };
 
