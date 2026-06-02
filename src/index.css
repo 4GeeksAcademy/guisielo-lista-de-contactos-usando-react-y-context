@@ -32,3 +32,9 @@
 .add-contact-form-container button {
     width: 100%;
 }
+
+.contact-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
